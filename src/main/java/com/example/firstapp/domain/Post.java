@@ -1,4 +1,4 @@
-package au.com.riosoftware.firstapp.domain;
+package com.example.firstapp.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,7 +31,7 @@ public class Post {
         return message;
     }
 
-    public void setMessage(String messagae) {
+    public void setMessage(String message) {
         this.message = message;
     }
 }

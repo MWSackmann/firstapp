@@ -1,4 +1,4 @@
-package au.com.riosoftware.firstapp.domain;
+package com.example.firstapp.domain;
 
 import org.springframework.data.repository.CrudRepository;
 
