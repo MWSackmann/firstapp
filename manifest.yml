@@ -1,0 +1,7 @@
+---
+applications:
+- name: firstapp
+  memory: 1G
+  instances: 1
+  timeout: 180
+  path: target/firstapp-1.0-SNAPSHOT.jar
