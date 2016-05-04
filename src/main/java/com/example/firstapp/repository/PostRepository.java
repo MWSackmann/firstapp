@@ -1,5 +1,6 @@
-package com.example.firstapp.domain;
+package com.example.firstapp.repository;
 
+import com.example.firstapp.model.Post;
 import org.springframework.data.repository.CrudRepository;
 
 /**

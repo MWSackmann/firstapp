@@ -1,15 +1,17 @@
 package com.example.firstapp.controllers;
 
-import com.example.firstapp.domain.Post;
-import com.example.firstapp.domain.PostRepository;
+import com.example.firstapp.model.Post;
+import com.example.firstapp.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.validation.Valid;
+import java.util.List;
 
 /**
  * Created by sackmann on 02.05.2016.
@@ -20,6 +22,68 @@ public class PostController {
 
     @Autowired
     private PostRepository repository;
+
+    //***************************************************
+    //  API methods using json
+    //***************************************************
+
+    //@RequestMapping(value = "", headers = "content-type=application/json", method = RequestMethod.GET, produces = {"application/json"})
+    @RequestMapping(value = "", method = RequestMethod.GET, consumes = "application/json", produces = {"application/json"})
+    @ResponseBody
+    public ResponseEntity get() {
+        return ResponseEntity.ok((List<Post>) repository.findAll());
+    }
+
+    // method returns single post via its id (key)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET, consumes = "application/json", produces = {"application/json"})
+    @ResponseBody
+    public ResponseEntity getById(@PathVariable("id") long id) {
+        final Post readPost = repository.findOne(id);
+        if (readPost == null) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(repository.findOne(id));
+    }
+
+    // method creates new post
+    @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
+    @ResponseBody
+    public ResponseEntity post(@Valid Post post) {
+        repository.save(post);
+        String response = String.format("id: %s", post.getId());
+        return new ResponseEntity<String>(response, HttpStatus.CREATED);
+    }
+
+    // method updates a single post via its id
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
+    @ResponseBody
+    public ResponseEntity put(@PathVariable("id") long id, @Valid Post post) {
+        final Post readPost = repository.findOne(id);
+        if (readPost == null) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        repository.save(post);
+        //http://stackoverflow.com/a/827045
+        //200 or 204
+        String response = String.format("id: %s", post.getId());
+        return new ResponseEntity<String>(response, HttpStatus.OK);
+    }
+
+    // method deletes single post via its id
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public ResponseEntity deleteById(@PathVariable("id") long id) {
+        final Post readPost = repository.findOne(id);
+        if (readPost == null) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        repository.delete(id);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+    // *************************************************
+    // UI methods using views in templates -> posts
+    // *************************************************
 
     // method selects all posts, loads list.hmtl
     @RequestMapping(value = "", method = RequestMethod.GET)

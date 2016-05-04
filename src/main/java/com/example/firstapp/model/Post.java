@@ -1,4 +1,4 @@
-package com.example.firstapp.domain;
+package com.example.firstapp.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,8 +22,8 @@ public class Post {
         this.createdAt = new Date();
     }
 
-    public Post(String s) {
-        this.message = s;
+    public Post(String message) {
+        this.message = message;
         this.createdAt = new Date();
     }
 
