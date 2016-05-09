@@ -1,4 +1,4 @@
-package com.example.firstapp.controllers;
+package com.example.firstapp.Controllers;
 
 import com.example.firstapp.model.Post;
 import com.example.firstapp.repository.PostRepository;

@@ -40,11 +40,13 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
         </dependency>
+<!--
         <dependency>
             <groupId>javax.ws.rs</groupId>
             <artifactId>com.springsource.javax.ws.rs</artifactId>
             <version>1.0.0</version>
         </dependency>
+-->
 
         <!--  temp use war file in virtual machine -->
        <!-- <dependency>
