@@ -10,7 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -27,15 +26,14 @@ public class PostController {
     //  API methods using json
     //***************************************************
 
-    //@RequestMapping(value = "", headers = "content-type=application/json", method = RequestMethod.GET, produces = {"application/json"})
-    @RequestMapping(value = "", method = RequestMethod.GET, consumes = "application/json", produces = {"application/json"})
+    @RequestMapping(value = "", method = RequestMethod.GET, produces = {"application/json"})
     @ResponseBody
     public ResponseEntity get() {
         return ResponseEntity.ok((List<Post>) repository.findAll());
     }
 
     // method returns single post via its id (key)
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET, consumes = "application/json", produces = {"application/json"})
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = {"application/json"})
     @ResponseBody
     public ResponseEntity getById(@PathVariable("id") long id) {
         final Post readPost = repository.findOne(id);
@@ -47,8 +45,7 @@ public class PostController {
 
     // method creates new post
     @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
-    @ResponseBody
-    public ResponseEntity post(@Valid Post post) {
+    public ResponseEntity post(@RequestBody Post post) {
         repository.save(post);
         String response = String.format("id: %s", post.getId());
         return new ResponseEntity<String>(response, HttpStatus.CREATED);
@@ -56,8 +53,7 @@ public class PostController {
 
     // method updates a single post via its id
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
-    @ResponseBody
-    public ResponseEntity put(@PathVariable("id") long id, @Valid Post post) {
+    public ResponseEntity put(@PathVariable("id") long id, @RequestBody Post post) {
         final Post readPost = repository.findOne(id);
         if (readPost == null) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
@@ -71,7 +67,6 @@ public class PostController {
 
     // method deletes single post via its id
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    @ResponseBody
     public ResponseEntity deleteById(@PathVariable("id") long id) {
         final Post readPost = repository.findOne(id);
         if (readPost == null) {
@@ -82,11 +77,11 @@ public class PostController {
     }
 
     // *************************************************
-    // UI methods using views in templates -> posts
+    // UI methods using views in resources -> templates -> posts
     // *************************************************
 
     // method selects all posts, loads list.hmtl
-    @RequestMapping(value = "", method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String listPost(Model model) {
         model.addAttribute("posts", repository.findAll());
         return "posts/list";
@@ -96,7 +91,7 @@ public class PostController {
     @RequestMapping(value = "/{id}/delete", method = RequestMethod.GET)
     public ModelAndView delete(@PathVariable long id) {
         repository.delete(id);
-        return new ModelAndView("redirect:/posts");
+        return new ModelAndView("redirect:/posts/list");
     }
 
     // method loads view for new post
@@ -109,7 +104,7 @@ public class PostController {
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ModelAndView create(@RequestParam("message") String comment) {
         repository.save(new Post(comment));
-        return new ModelAndView("redirect:/posts");
+        return new ModelAndView("redirect:/posts/list");
     }
 
     // method loads view for editing existing post
@@ -128,6 +123,6 @@ public class PostController {
         Post post = repository.findOne(id);
         post.setMessage(message);
         repository.save(post);
-        return new ModelAndView("redirect:/posts");
+        return new ModelAndView("redirect:/posts/list");
     }
 }

@@ -35,11 +35,21 @@ public class Post {
         return message;
     }
 
+    public Date getCreatedAt() {
+        return createdAt;
+
+    }
+
     public void setMessage(String message) {
         this.message = message;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
+    public void setId(long id) {
+        this.id = id;
     }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
 }
