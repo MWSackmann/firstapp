@@ -1,6 +1,6 @@
 package com.example.firstapp;
 
-// this are  basic settings to make class executeble class by springboot
+// this are  basic settings to make class executable class by springboot
 // works via annotation
 
 import com.example.firstapp.model.Post;
