@@ -1,10 +1,10 @@
-package com.example.firstapp;
+package com.example;
 
 // this are  basic settings to make class executable class by springboot
 // works via annotation
 
-import com.example.firstapp.model.Post;
-import com.example.firstapp.repository.PostRepository;
+import com.example.model.Post;
+import com.example.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;

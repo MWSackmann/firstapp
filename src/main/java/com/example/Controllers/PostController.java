@@ -1,7 +1,7 @@
-package com.example.firstapp.Controllers;
+package com.example.Controllers;
 
-import com.example.firstapp.model.Post;
-import com.example.firstapp.repository.PostRepository;
+import com.example.model.Post;
+import com.example.repository.PostRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
