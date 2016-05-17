@@ -38,6 +38,18 @@
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
 
+        <!-- needed for tests -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+
         <!-- link to database -->
         <dependency>
             <groupId>com.h2database</groupId>
@@ -50,14 +62,6 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
-<!--
-        <dependency>
-            <groupId>javax.ws.rs</groupId>
-            <artifactId>com.springsource.javax.ws.rs</artifactId>
-            <version>1.0.0</version>
-        </dependency>
--->
-
         <!--  temp use war file in virtual machine -->
        <!-- <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -65,13 +69,6 @@
             <scope>provided</scope>
         </dependency>-->
 
- <!--       <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>3.8.1</version>
-            <scope>test</scope>
-        </dependency>
--->
     </dependencies>
 
     <build>
