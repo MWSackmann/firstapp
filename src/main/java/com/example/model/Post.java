@@ -1,9 +1,7 @@
 package com.example.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -16,15 +14,16 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String message;
-    private Date createdAt;
+    private Timestamp createdAt;
+    private Timestamp updatedAt;
+    @Version
+    private long version;
 
     public Post() {
-        this.createdAt = new Date();
     }
 
     public Post(String message) {
         this.message = message;
-        this.createdAt = new Date();
     }
 
     public long getId() {
@@ -35,9 +34,12 @@ public class Post {
         return message;
     }
 
-    public Date getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
+    }
 
+    public Timestamp getUpdatedAt() {
+        return updatedAt;
     }
 
     public void setMessage(String message) {
@@ -48,8 +50,26 @@ public class Post {
         this.id = id;
     }
 
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
+    public long getVersion() {
+        return version;
     }
 
+    @PrePersist
+    protected void onPersist() {
+        this.createdAt = now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = now();
+    }
+
+    protected Timestamp now() {
+        return new Timestamp(new Date().getTime());
+    }
+
+    @Override
+    public String toString() {
+        return "Post ID " + id;
+    }
 }

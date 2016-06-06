@@ -55,6 +55,14 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
         </dependency>
+        <!-- PostgreSQL database implementations -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>9.4-1206-jdbc41</version>
+            <!--<scope>runtime</scope>-->
+        </dependency>
+
 
         <!-- this provides production grade services i.e. add. endpoints like configprops, environment, health -->
         <dependency>
