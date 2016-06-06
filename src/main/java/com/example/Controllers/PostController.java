@@ -33,7 +33,7 @@ public class PostController {
     @ResponseBody
     public ResponseEntity get() {
         LOGGER.info("METHOD CALLED: get");
-        return ResponseEntity.ok((List<Post>) repository.findAll());
+        return ResponseEntity.ok((List<Post>) repository.findAllByOrderByIdAsc());
     }
 
     // method returns single post via its id (key)
@@ -92,7 +92,7 @@ public class PostController {
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String listPost(Model model) {
         LOGGER.info("UI METHOD CALLED: list");
-        model.addAttribute("posts", repository.findAll());
+        model.addAttribute("posts", repository.findAllByOrderByIdAsc());
         return "posts/list";
     }
 

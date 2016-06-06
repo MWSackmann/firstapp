@@ -26,7 +26,12 @@
       <module name="firstapp" target="1.6" />
     </bytecodeTargetLevel>
   </component>
-  <component name="CopyrightManager" default="" />
+  <component name="CopyrightManager" default="SAP">
+    <copyright>
+      <option name="myName" value="SAP" />
+      <option name="notice" value="Copyright (c) &amp;#36;today.year SAP SE or an SAP affiliate company. All rights reserved. " />
+    </copyright>
+  </component>
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$" charset="UTF-8" />
   </component>
