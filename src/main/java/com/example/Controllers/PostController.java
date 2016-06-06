@@ -50,11 +50,11 @@ public class PostController {
 
     // method creates new post
     @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
+    @ResponseBody
     public ResponseEntity post(@RequestBody Post post) {
         repository.save(post);
         LOGGER.info("METHOD CALLED: post with id " + post.getId());
-        String response = String.format("id: %s", post.getId());
-        return new ResponseEntity<String>(response, HttpStatus.CREATED);
+        return new ResponseEntity(repository.findOne(post.getId()), HttpStatus.CREATED);
     }
 
     // method updates a single post via its id
@@ -65,11 +65,13 @@ public class PostController {
         if (readPost == null) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
+        if (id != post.getId()) {
+            return new ResponseEntity(HttpStatus.UNPROCESSABLE_ENTITY);
+        }
         repository.save(post);
         //http://stackoverflow.com/a/827045
         //200 or 204
-        String response = String.format("id: %s", post.getId());
-        return new ResponseEntity<String>(response, HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
     // method deletes single post via its id
