@@ -1,7 +1,11 @@
 ---
 applications:
 - name: firstapp
+  # via this we do not have to pass unique name via push -n ..
+  host: firstapp-d020447
   memory: 1G
   instances: 1
   timeout: 180
   path: target/firstapp-1.0-SNAPSHOT.jar
+  services:
+   - postgres-firstapp
