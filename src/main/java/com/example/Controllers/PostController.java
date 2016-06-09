@@ -29,6 +29,7 @@ public class PostController {
     //  API methods using json
     //***************************************************
 
+    // method returns all posts available
     @RequestMapping(value = "", method = RequestMethod.GET, produces = {"application/json"})
     @ResponseBody
     public ResponseEntity get() {
