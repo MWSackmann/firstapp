@@ -20,8 +20,12 @@ public class PostTest {
 
     @Test
     public void getId() throws Exception {
-        post.setId(99);
-        assertEquals(99, post.getId());
+
+        Long id = new Long(99);
+
+
+        post.setId(id);
+        assertEquals(id, post.getId());
     }
 
     @Test

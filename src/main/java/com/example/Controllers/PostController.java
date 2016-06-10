@@ -5,13 +5,16 @@ import com.example.repository.PostRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 /**
@@ -31,15 +34,13 @@ public class PostController {
 
     // method returns all posts available
     @RequestMapping(value = "", method = RequestMethod.GET, produces = {"application/json"})
-    @ResponseBody
     public ResponseEntity get() {
         LOGGER.info("METHOD CALLED: get");
-        return ResponseEntity.ok((List<Post>) repository.findAllByOrderByIdAsc());
+        return ResponseEntity.ok((List<Post>) repository.findAll());
     }
 
     // method returns single post via its id (key)
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = {"application/json"})
-    @ResponseBody
     public ResponseEntity getById(@PathVariable("id") long id) {
         LOGGER.info("METHOD CALLED: getById with id " + id);
         final Post readPost = repository.findOne(id);
@@ -51,11 +52,18 @@ public class PostController {
 
     // method creates new post
     @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
-    @ResponseBody
     public ResponseEntity post(@RequestBody Post post) {
+        if (post.getId() != null) {
+            return new ResponseEntity<String>("Defining an ID is not allowed in POST request", HttpStatus.BAD_REQUEST);
+        }
         repository.save(post);
         LOGGER.info("METHOD CALLED: post with id " + post.getId());
-        return new ResponseEntity(repository.findOne(post.getId()), HttpStatus.CREATED);
+
+        // we do not return the created entity in body, instead we return the URL to the created entity in response header
+        final URI uriOfCreatedPost = ServletUriComponentsBuilder.fromCurrentContextPath().path(String.format("posts/%s", post.getId())).build().toUri();
+        final HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.setLocation(uriOfCreatedPost);
+        return new ResponseEntity<String>(String.format("id: %s", post.getId()), responseHeaders, HttpStatus.CREATED);
     }
 
     // method updates a single post via its id
@@ -67,7 +75,7 @@ public class PostController {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
         if (id != post.getId()) {
-            return new ResponseEntity(HttpStatus.UNPROCESSABLE_ENTITY);
+            return new ResponseEntity<String>("ID in Path and Body differ", HttpStatus.UNPROCESSABLE_ENTITY);
         }
         repository.save(post);
         //http://stackoverflow.com/a/827045
@@ -95,7 +103,7 @@ public class PostController {
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String listPost(Model model) {
         LOGGER.info("UI METHOD CALLED: list");
-        model.addAttribute("posts", repository.findAllByOrderByIdAsc());
+        model.addAttribute("posts", repository.findAllByOrderByCreatedAtDesc());
         return "posts/list";
     }
 

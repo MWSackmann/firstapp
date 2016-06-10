@@ -12,7 +12,7 @@ public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
     private String message;
     private Timestamp createdAt;
     private Timestamp updatedAt;
@@ -26,7 +26,7 @@ public class Post {
         this.message = message;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -46,7 +46,7 @@ public class Post {
         this.message = message;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
