@@ -60,7 +60,7 @@ public class PostController {
         LOGGER.info("METHOD CALLED: post with id {}", post.getId());
 
         // we do not return the created entity in body, instead we return the URL to the created entity in response header
-        final URI uriOfCreatedPost = ServletUriComponentsBuilder.fromCurrentContextPath().path(String.format("posts/%s", post.getId())).build().toUri();
+        final URI uriOfCreatedPost = ServletUriComponentsBuilder.fromCurrentContextPath().path("posts/{id}").buildAndExpand(post.getId()).toUri();
         final HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setLocation(uriOfCreatedPost);
         return new ResponseEntity<String>(String.format("id: %s", post.getId()), responseHeaders, HttpStatus.CREATED);
