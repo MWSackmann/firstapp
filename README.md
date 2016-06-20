@@ -6,3 +6,4 @@ The API provides some CRUD methods.
 Collection can be accessed via uri /posts.
 
 Some sample UI is also part of this service which can be accessed via uri /posts/list
+test  line 1
