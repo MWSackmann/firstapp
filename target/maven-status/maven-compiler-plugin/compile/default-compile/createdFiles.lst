@@ -1,0 +1,6 @@
+com\example\WebConfiguration\WebConfiguration.class
+com\example\Application.class
+com\example\repository\PostRepository.class
+com\example\Controllers\PostController.class
+com\example\model\Post.class
+com\example\bootstrap\PostLoader.class
