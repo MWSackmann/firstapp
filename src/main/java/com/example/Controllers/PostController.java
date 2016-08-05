@@ -1,4 +1,4 @@
-package com.example.Controllers;
+package com.example.controllers;
 
 import com.example.model.Post;
 import com.example.repository.PostRepository;

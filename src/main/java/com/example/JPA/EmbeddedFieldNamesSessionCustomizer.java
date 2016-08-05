@@ -2,7 +2,7 @@
  * Copyright (c) 2016 SAP SE or an SAP affiliate company. All rights reserved.
  */
 
-package com.example.JPA;
+package com.example.jpa;
 
 import org.eclipse.persistence.config.SessionCustomizer;
 import org.eclipse.persistence.descriptors.ClassDescriptor;

@@ -2,7 +2,7 @@
  * Copyright (c) 2016 SAP SE or an SAP affiliate company. All rights reserved.
  */
 
-package com.example.WebConfiguration;
+package com.example.webconfiguration;
 
 import org.h2.server.web.WebServlet;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
