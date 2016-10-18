@@ -2,6 +2,7 @@ package com.example.repository;
 
 import com.example.model.Post;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

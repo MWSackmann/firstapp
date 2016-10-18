@@ -9,6 +9,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -20,6 +22,7 @@ import java.util.List;
 /**
  * Created by sackmann on 02.05.2016.
  */
+@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 @Controller
 @RequestMapping("/posts")
 public class PostController {
@@ -51,6 +54,7 @@ public class PostController {
     }
 
     // method creates new post
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
     @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
     public ResponseEntity post(@RequestBody Post post) {
         if (post.getId() != null) {
@@ -67,6 +71,7 @@ public class PostController {
     }
 
     // method updates a single post via its id
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
     public ResponseEntity put(@PathVariable("id") long id, @RequestBody Post post) {
         LOGGER.info("METHOD CALLED: put with id {}", id);
@@ -84,6 +89,7 @@ public class PostController {
     }
 
     // method deletes single post via its id
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity deleteById(@PathVariable("id") long id) {
         LOGGER.info("METHOD CALLED: deleteById with id {}", id);
@@ -108,6 +114,7 @@ public class PostController {
     }
 
     // method deletes single post via id, via redirect reloads list view again
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
     @RequestMapping(value = "/{id}/delete", method = RequestMethod.GET)
     public ModelAndView delete(@PathVariable long id) {
         LOGGER.info("UI METHOD CALLED: delete with id {}", id);
@@ -123,6 +130,7 @@ public class PostController {
     }
 
     // method is triggered via submit button on create.html, does save, reloads list.hmtl
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ModelAndView create(@RequestParam("message") String comment) {
         Post post = new Post(comment);
@@ -141,6 +149,7 @@ public class PostController {
     }
 
     // method is triggered via submit button on edit.html, does save, reloads list.html
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ModelAndView update(@RequestParam("post_id") long id,
                                @RequestParam("message") String message) {
