@@ -2,6 +2,7 @@ package com.example.bootstrap;
 
 import com.example.model.Post;
 import com.example.repository.PostRepository;
+import com.example.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -13,17 +14,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class PostLoader implements ApplicationListener<ContextRefreshedEvent> {
 
-    private PostRepository repository;
+    private PostService postService;
 
     @Autowired
-    public void setPostRepository(PostRepository repository) {
-        this.repository = repository;
+    public void setPostService(PostService postService) {
+        this.postService = postService;
     }
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         for (int i = 0; i < 5; i++) {
-            repository.save(new Post("My post number #" + (i + 1)));
+            postService.create(new Post("My post number #" + (i + 1)));
         }
     }
 }
