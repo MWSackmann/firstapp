@@ -62,6 +62,12 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
+        <!-- provide basic auth -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
         <!--  temp use war file in virtual machine -->
        <!-- <dependency>
             <groupId>org.springframework.boot</groupId>
