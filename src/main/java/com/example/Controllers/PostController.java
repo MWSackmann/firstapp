@@ -9,6 +9,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -33,6 +35,7 @@ public class PostController {
     //***************************************************
 
     // method returns all posts available
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     @RequestMapping(value = "", method = RequestMethod.GET, produces = {"application/json"})
     public ResponseEntity get() {
         LOGGER.info("METHOD CALLED: get");
@@ -40,6 +43,7 @@ public class PostController {
     }
 
     // method returns single post via its id (key)
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = {"application/json"})
     public ResponseEntity getById(@PathVariable("id") long id) {
         LOGGER.info("METHOD CALLED: getById with id {}", id);
@@ -51,6 +55,7 @@ public class PostController {
     }
 
     // method creates new post
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
     @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
     public ResponseEntity post(@RequestBody Post post) {
         if (post.getId() != null) {
@@ -67,6 +72,7 @@ public class PostController {
     }
 
     // method updates a single post via its id
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
     public ResponseEntity put(@PathVariable("id") long id, @RequestBody Post post) {
         LOGGER.info("METHOD CALLED: put with id {}", id);
@@ -80,10 +86,11 @@ public class PostController {
         repository.save(post);
         //http://stackoverflow.com/a/827045
         //200 or 204
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity(post, HttpStatus.NO_CONTENT);
     }
 
     // method deletes single post via its id
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity deleteById(@PathVariable("id") long id) {
         LOGGER.info("METHOD CALLED: deleteById with id {}", id);
