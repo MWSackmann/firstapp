@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-@EnableTransactionManagement
+
 @SpringBootApplication
 @EnableTransactionManagement
 public class Application extends JpaBaseConfiguration {
