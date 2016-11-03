@@ -1,4 +1,4 @@
-package com.example.controllers2;
+package com.example.controllers;
 
 import com.example.model.Post;
 import com.example.service.PostService;
