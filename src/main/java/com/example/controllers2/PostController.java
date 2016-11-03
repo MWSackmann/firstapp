@@ -1,7 +1,6 @@
-package com.example.controllers;
+package com.example.controllers2;
 
 import com.example.model.Post;
-import com.example.repository.PostRepository;
 import com.example.service.PostService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
