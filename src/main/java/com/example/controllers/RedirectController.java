@@ -14,7 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/v1/posts")
 public class RedirectController {
 
-    // we redirect all "/v1/posts" request to "/postscd "
+    // we redirect all "/v1/posts" request to "/posts"
     @RequestMapping(value = "")
     public ModelAndView redirectWithUsingForwardPrefix(ModelMap model) {
         model.addAttribute("attribute", "forwardWithForwardPrefix");
