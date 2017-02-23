@@ -9,9 +9,13 @@ import com.example.repository.PostRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created by sackmann on 18.10.2016.
@@ -22,10 +26,19 @@ public class PostService {
 
     @Autowired
     private PostRepository repository;
+
+    @Autowired
+    private HttpServletRequest request;
+
+
     private static final Logger LOGGER = LoggerFactory.getLogger(PostService.class);
 
     public <List>Iterable<Post> findAll(){
         LOGGER.info("METHOD CALLED: get");
+
+        logAuth();
+
+
         return repository.findAll();
     }
 
@@ -60,5 +73,11 @@ public class PostService {
     public void delete(Long id){
         repository.delete(id);
         LOGGER.info("METHOD CALLED: deleteById with id {}", id);
+    }
+
+    public void logAuth() {
+
+        LOGGER.info("Test Authorization: " + request.getHeader(HttpHeaders.AUTHORIZATION));
+
     }
 }
