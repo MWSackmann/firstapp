@@ -5,17 +5,21 @@
 package com.example.service;
 
 import com.example.model.Post;
+import com.example.model.Quote;
 import com.example.repository.PostRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
+import java.util.Map;
 
 /**
  * Created by sackmann on 18.10.2016.
@@ -30,15 +34,15 @@ public class PostService {
     @Autowired
     private HttpServletRequest request;
 
+    @Autowired
+    private RestTemplate restTemplate;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PostService.class);
 
     public <List>Iterable<Post> findAll(){
         LOGGER.info("METHOD CALLED: get");
-
         logAuth();
-
-
+        callSomething();
         return repository.findAll();
     }
 
@@ -75,9 +79,24 @@ public class PostService {
         LOGGER.info("METHOD CALLED: deleteById with id {}", id);
     }
 
+    // some sample method which is using autowired request. Used for mocking sample in testclass
     public void logAuth() {
-
         LOGGER.info("Test Authorization: " + request.getHeader(HttpHeaders.AUTHORIZATION));
+    }
 
+    // some sample method which is using autowired request template. Used for mocking sample in testclass
+    public Quote callSomething(){
+
+    //    Quote quote = restTemplate.getForObject("http://gturnquist-quoters.cfapps.io/api/random", Quote.class);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+        HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
+
+        ResponseEntity<Quote> result = restTemplate.exchange("http://gturnquist-quoters.cfapps.io/api/random", HttpMethod.GET, entity, Quote.class);
+        Quote quote = result.getBody();
+
+        LOGGER.info("Quote called with response: " + quote.toString());
+        return quote;
     }
 }
