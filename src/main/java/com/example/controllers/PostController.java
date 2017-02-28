@@ -1,5 +1,10 @@
+/*
+ * Copyright (c) 2017 SAP SE or an SAP affiliate company. All rights reserved.
+ */
+
 package com.example.controllers;
 
+import com.example.configuration.CustomConfigProperties;
 import com.example.model.Post;
 import com.example.service.PostService;
 import org.slf4j.Logger;
@@ -17,9 +22,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
-/**
- * Created by sackmann on 02.05.2016.
- */
 @Controller
 @RequestMapping("/posts")
 public class PostController {
@@ -28,6 +30,8 @@ public class PostController {
     private PostService postService;
     private static final Logger LOGGER = LoggerFactory.getLogger(PostController.class);
 
+    @Autowired
+    private CustomConfigProperties customConfigProperties;
     //***************************************************
     //  API methods using json
     //***************************************************
