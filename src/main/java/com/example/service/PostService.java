@@ -11,15 +11,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
-import java.util.Map;
+import java.util.concurrent.Future;
 
 /**
  * Created by sackmann on 18.10.2016.
@@ -41,8 +42,12 @@ public class PostService {
 
     public <List>Iterable<Post> findAll(){
         LOGGER.info("METHOD CALLED: get");
-        logAuth();
-        callSomething();
+//        logAuth();
+//        callSomething();
+//        try {
+//            callSomethingAsync();
+//        } catch (InterruptedException e) {
+//        }
         return repository.findAll();
     }
 
@@ -91,7 +96,7 @@ public class PostService {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-        HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
+        HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
 
         ResponseEntity<Quote> result = restTemplate.exchange("http://gturnquist-quoters.cfapps.io/api/random", HttpMethod.GET, entity, Quote.class);
         Quote quote = result.getBody();
@@ -99,4 +104,21 @@ public class PostService {
         LOGGER.info("Quote called with response: " + quote.toString());
         return quote;
     }
+
+    @Async
+    public Future<Quote> callSomethingAsync() throws InterruptedException {
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+        HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
+
+        Quote results = restTemplate.getForObject("http://gturnquist-quoters.cfapps.io/api/random", Quote.class);
+        Thread.sleep(1000L);  // only for demo purposes
+
+        AsyncResult<Quote> quote = new AsyncResult<>(results);
+
+        LOGGER.info("Quote called with response: " + quote.toString());
+        return quote;
+    }
+
 }
