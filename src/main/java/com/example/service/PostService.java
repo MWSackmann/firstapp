@@ -4,12 +4,14 @@
 
 package com.example.service;
 
+import com.example.external.ExternalServiceInterface;
 import com.example.model.Post;
 import com.example.model.Quote;
 import com.example.repository.PostRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.*;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
@@ -20,6 +22,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.concurrent.Future;
 
 /**
@@ -38,16 +41,18 @@ public class PostService {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    private ApplicationContext applicationContext;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(PostService.class);
 
     public <List>Iterable<Post> findAll(){
         LOGGER.info("METHOD CALLED: get");
-//        logAuth();
-//        callSomething();
-//        try {
-//            callSomethingAsync();
-//        } catch (InterruptedException e) {
-//        }
+        // sample to call generically other beans via given interface
+        Map<String, ExternalServiceInterface> map = applicationContext.getBeansOfType(ExternalServiceInterface.class);
+        for (ExternalServiceInterface externalServiceInterface : map.values()) {
+            LOGGER.info("this is object: " + externalServiceInterface.getName());
+        }
         return repository.findAll();
     }
 
